@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
 // Creates the app theme
-ThemeData createAppTheme() => ThemeData(
+ThemeData buildAppTheme() => ThemeData(
     primarySwatch: Colors.blue,
 );

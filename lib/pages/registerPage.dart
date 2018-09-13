@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import './loginPage.dart';
 import '../widgets/hiddenScrollBehavior.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -36,8 +35,7 @@ class _RegisterPageState extends State<RegisterPage> {
       persistentFooterButtons: <Widget>[
         FlatButton(
           onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => LoginPage()));
+            Navigator.of(context).pushNamed('/login');
           },
           child: Text("I already have an account"),
         ),

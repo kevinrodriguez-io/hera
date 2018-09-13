@@ -6,10 +6,10 @@ class MainTabsPage extends StatefulWidget {
 }
 
 class _MainTabsPageState extends State<MainTabsPage> {
-
   @override
   Widget build(BuildContext context) {
-    
+    return Center(
+      child: Text('I will be a main tabs page :D'),
+    );
   }
-
 }

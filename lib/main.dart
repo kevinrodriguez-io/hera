@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './pages/registerPage.dart';
 import './theme.dart';
+import './routes.dart';
 
 void main() => runApp(new HeraApp());
 
@@ -8,9 +9,10 @@ class HeraApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'Flutter Demo',
-      theme: createAppTheme(),
-      home: RegisterPage(),
+      title:  'Flutter Demo',
+      theme:  buildAppTheme(),
+      routes: buildAppRoutes(),
+      home:   RegisterPage(),
     );
   }
 }
