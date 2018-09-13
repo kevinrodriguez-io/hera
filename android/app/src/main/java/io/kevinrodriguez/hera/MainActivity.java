@@ -1,4 +1,4 @@
-package com.example.hera;
+package io.kevinrodriguez.hera;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
