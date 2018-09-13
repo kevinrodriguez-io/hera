@@ -16,11 +16,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   _animateFlutterLogo() {
     setState(() {
-      if (logoStyle == FlutterLogoStyle.markOnly) {
-        logoStyle = FlutterLogoStyle.horizontal;
-      } else {
-        logoStyle = FlutterLogoStyle.markOnly;
-      }
+        logoStyle = (logoStyle == FlutterLogoStyle.markOnly) ? FlutterLogoStyle.horizontal : FlutterLogoStyle.markOnly;
     });
   }
 

@@ -29,9 +29,18 @@ class _MainTabsPageState extends State<MainTabsPage> {
                 child: TabBar(
                   labelStyle: TextStyle(fontSize: 10.0),
                   tabs: <Widget>[
-                    Tab(icon: Icon(Icons.apps), text: 'Home',),
-                    Tab(icon: Icon(Icons.history), text: 'History',),
-                    Tab(icon: Icon(Icons.settings), text: 'Settings',),
+                    Tab(
+                      icon: Icon(Icons.apps),
+                      text: 'Home',
+                    ),
+                    Tab(
+                      icon: Icon(Icons.history),
+                      text: 'History',
+                    ),
+                    Tab(
+                      icon: Icon(Icons.settings),
+                      text: 'Settings',
+                    ),
                   ],
                 ),
               )),
