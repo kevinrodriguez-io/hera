@@ -44,7 +44,7 @@ class _MainTabsPageState extends State<MainTabsPage> {
                   ],
                 ),
               )),
-          backgroundColor: Theme.of(context).backgroundColor
+          backgroundColor: Theme.of(context).primaryColor
         ),
       ),
     );

@@ -10,7 +10,6 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  
   final usernameFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -18,6 +17,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   String username;
   String password;
+  bool isRegistering = false;
 
   FlutterLogoStyle logoStyle = FlutterLogoStyle.horizontal;
 
@@ -32,23 +32,33 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   void initState() {
     super.initState();
-    runAnimationAfter2s(); //
+    _runAnimationAfter2s(); //
   }
 
-  void runAnimationAfter2s() async {
+  void _runAnimationAfter2s() async {
     await Future.delayed(Duration(seconds: 2), () {
       _animateFlutterLogo();
     });
   }
 
-  void registerUser() async {
-    _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('Registering user'),));
+  void _registerUser() async {
+    if (isRegistering) return;
+    setState(() {
+      isRegistering = true;
+    });
+
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text('Registering user'),
+    ));
+
     final FormState form = _formKey.currentState;
     if (!form.validate()) {
       _scaffoldKey.currentState.hideCurrentSnackBar();
       return;
     }
+
     form.save();
+
     try {
       FirebaseUser _ = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: username, password: password);
       Navigator.of(context).pushReplacementNamed('/maintabs');
@@ -57,7 +67,17 @@ class _RegisterPageState extends State<RegisterPage> {
       _scaffoldKey.currentState.showSnackBar(SnackBar(
         content: Text(e.message),
         duration: Duration(seconds: 10),
+        action: SnackBarAction(
+          label: 'Dismiss',
+          onPressed: () {
+            _scaffoldKey.currentState.hideCurrentSnackBar();
+          },
+        ),
       ));
+    } finally {
+      setState(() {
+        isRegistering = false;
+      });
     }
   }
 
@@ -69,7 +89,7 @@ class _RegisterPageState extends State<RegisterPage> {
         title: Text('Register'),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: registerUser,
+        onPressed: _registerUser,
         child: Icon(Icons.person_add),
       ),
       persistentFooterButtons: <Widget>[
@@ -93,8 +113,13 @@ class _RegisterPageState extends State<RegisterPage> {
                     size: 200.0,
                   ),
                   TextFormField(
-                    onSaved: (val) { setState(() { username = val; }); },
-                    validator: (val) => val == "" ? val : null,
+                    onSaved: (val) {
+                      setState(() {
+                        username = val;
+                      });
+                    },
+                    validator: (val) =>
+                        val == "" ? 'Please enter a valid email' : null,
                     autocorrect: false,
                     focusNode: usernameFocusNode,
                     decoration: InputDecoration(labelText: 'Username'),
@@ -104,8 +129,13 @@ class _RegisterPageState extends State<RegisterPage> {
                     },
                   ),
                   TextFormField(
-                    onSaved: (val) { setState(() { password = val; }); },
-                    validator: (val) => val == "" ? val : null,
+                    onSaved: (val) {
+                      setState(() {
+                        password = val;
+                      });
+                    },
+                    validator: (val) =>
+                        val == "" ? 'Please enter a valid password' : null,
                     focusNode: passwordFocusNode,
                     obscureText: true,
                     decoration: InputDecoration(
