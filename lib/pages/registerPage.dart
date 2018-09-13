@@ -60,7 +60,8 @@ class _RegisterPageState extends State<RegisterPage> {
     form.save();
 
     try {
-      FirebaseUser _ = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: username, password: password);
+      FirebaseUser _ = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: username, password: password);
       Navigator.of(context).pushReplacementNamed('/maintabs');
     } catch (e) {
       _scaffoldKey.currentState.hideCurrentSnackBar();
@@ -113,16 +114,11 @@ class _RegisterPageState extends State<RegisterPage> {
                     size: 200.0,
                   ),
                   TextFormField(
-                    onSaved: (val) {
-                      setState(() {
-                        username = val;
-                      });
-                    },
-                    validator: (val) =>
-                        val == "" ? 'Please enter a valid email' : null,
+                    onSaved: (val) { setState(() {username = val;}); },
+                    validator: (val) => val == "" ? 'Please enter a valid email' : null,
                     autocorrect: false,
                     focusNode: usernameFocusNode,
-                    decoration: InputDecoration(labelText: 'Username'),
+                    decoration: InputDecoration(labelText: 'Email'),
                     keyboardType: TextInputType.emailAddress,
                     onEditingComplete: () {
                       FocusScope.of(context).requestFocus(passwordFocusNode);
@@ -145,7 +141,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 20.0),
                     child: Text(
-                      "Hera app, with love by kevinrodriguez-io source code available at: https://github.com/kevinrodriguez-io/hera",
+                      "Welcome to Hera app!, with love by kevinrodriguez-io\nSource code available at: https://github.com/kevinrodriguez-io/hera",
                       style:
                           TextStyle(color: Color.fromARGB(255, 200, 200, 200)),
                     ),
@@ -156,10 +152,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     color: Color.fromARGB(255, 59, 89, 152),
                     textColor: Colors.white,
                   ),
-                  FlatButton(
-                      child: Text('Animate flutter logo'),
-                      onPressed: _animateFlutterLogo,
-                      textColor: Colors.blueGrey),
                 ],
               ),
             )),

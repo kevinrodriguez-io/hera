@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import './pages/registerPage.dart';
-import './theme.dart';
-import './routes.dart';
+import 'pages/registerPage.dart';
+import 'theme.dart';
+import 'routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import './pages/mainTabsPage.dart';
+import 'pages/mainTabsPage.dart';
 
 void main() => runApp(new HeraApp());
 

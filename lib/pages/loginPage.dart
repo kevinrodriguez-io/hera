@@ -10,7 +10,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  
   final usernameFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -61,7 +60,8 @@ class _LoginPageState extends State<LoginPage> {
     form.save();
 
     try {
-      FirebaseUser _ = await FirebaseAuth.instance.signInWithEmailAndPassword(email: username, password: password);
+      FirebaseUser _ = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: username, password: password);
       Navigator.of(context).pop();
       Navigator.of(context).pushReplacementNamed('/maintabs');
     } catch (e) {
@@ -124,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                         val == "" ? 'Please enter a valid email' : null,
                     autocorrect: false,
                     focusNode: usernameFocusNode,
-                    decoration: InputDecoration(labelText: 'Username'),
+                    decoration: InputDecoration(labelText: 'Email'),
                     keyboardType: TextInputType.emailAddress,
                     onEditingComplete: () {
                       FocusScope.of(context).requestFocus(passwordFocusNode);
@@ -147,9 +147,8 @@ class _LoginPageState extends State<LoginPage> {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 20.0),
                     child: Text(
-                      "Hera app, with love by kevinrodriguez-io source code available at: https://github.com/kevinrodriguez-io/hera",
-                      style:
-                          TextStyle(color: Color.fromARGB(255, 200, 200, 200)),
+                      "Welcome to Hera app!, with love by kevinrodriguez-io\nSource code available at: https://github.com/kevinrodriguez-io/hera",
+                      style: TextStyle(color: Color.fromARGB(255, 200, 200, 200)),
                     ),
                   ),
                   RaisedButton(
@@ -159,8 +158,10 @@ class _LoginPageState extends State<LoginPage> {
                     textColor: Colors.white,
                   ),
                   FlatButton(
-                      child: Text('Animate flutter logo'),
-                      onPressed: _animateFlutterLogo,
+                      child: Text('I forgot my password'),
+                      onPressed: () {
+                        Navigator.of(context).pushNamed('/forgotpassword');
+                      },
                       textColor: Colors.blueGrey),
                 ],
               ),
