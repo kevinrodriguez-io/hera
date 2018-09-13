@@ -62,6 +62,7 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       FirebaseUser _ = await FirebaseAuth.instance.signInWithEmailAndPassword(email: username, password: password);
+      Navigator.of(context).pop();
       Navigator.of(context).pushReplacementNamed('/maintabs');
     } catch (e) {
       _scaffoldKey.currentState.hideCurrentSnackBar();
