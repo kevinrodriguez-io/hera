@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import '../widgets/hiddenScrollBehavior.dart';
 
@@ -10,7 +12,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final usernameFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
 
-  FlutterLogoStyle logoStyle = FlutterLogoStyle.markOnly;
+  FlutterLogoStyle logoStyle = FlutterLogoStyle.horizontal;
 
   _animateFlutterLogo() {
     setState(() {
@@ -23,13 +25,27 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    runAnimationAfter2s(); //
+  }
+
+  void runAnimationAfter2s() async {
+    await Future.delayed(Duration(seconds: 2), () {
+      _animateFlutterLogo();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Register'),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).pushReplacementNamed('/maintabs');
+        },
         child: Icon(Icons.person_add),
       ),
       persistentFooterButtons: <Widget>[
