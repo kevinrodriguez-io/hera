@@ -54,6 +54,9 @@ class _RegisterPageState extends State<RegisterPage> {
     final FormState form = _formKey.currentState;
     if (!form.validate()) {
       _scaffoldKey.currentState.hideCurrentSnackBar();
+      setState(() {
+        isRegistering = true;
+      });
       return;
     }
 

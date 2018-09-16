@@ -54,6 +54,9 @@ class _LoginPageState extends State<LoginPage> {
     final FormState form = _formKey.currentState;
     if (!form.validate()) {
       _scaffoldKey.currentState.hideCurrentSnackBar();
+      setState(() {
+        isLoggingIn = false;
+      });
       return;
     }
 

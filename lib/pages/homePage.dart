@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
@@ -5,23 +6,29 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../models/TodoItem.dart';
 
 class HomePage extends StatefulWidget {
+  HomePage({this.app});
+  final FirebaseApp app;
+
   @override
   State<StatefulWidget> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-
-  String _uid;
+  DatabaseReference _itemRef;
+  FirebaseUser _user;
 
   @override
   void initState() {
     super.initState();
     FirebaseAuth.instance.currentUser().then((FirebaseUser user) {
-      setState(() {
-        _uid = user.uid;
-      });
+      _user = user;
+      _itemRef = FirebaseDatabase(app: widget.app)
+          .reference()
+          .child('/users/' + _user.uid + '/todos');
     });
   }
+
+  Widget renderContent() {}
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +41,9 @@ class _HomePageState extends State<HomePage> {
         child: Icon(Icons.add),
       ),
       body: FirebaseAnimatedList(
-        query: FirebaseDatabase.instance.reference().child("users/$_uid/todos/"),
-        itemBuilder:
-            (_, DataSnapshot snapshot, Animation<double> animation, int index) {
+        query: _itemRef,
+        itemBuilder: (BuildContext context, DataSnapshot snapshot,
+            Animation<double> animation, int index) {
           TodoItem todoItem = TodoItem.fromSnapshot(snapshot);
           return CheckboxListTile(
             value: todoItem.complete,
@@ -47,7 +54,7 @@ class _HomePageState extends State<HomePage> {
               String todoItemKey = todoItem.key;
               FirebaseDatabase.instance
                   .reference()
-                  .child("users/$_uid/todos/$todoItemKey")
+                  .child("/users/" + _user.uid + "/todos/$todoItemKey/")
                   .set(todoItem.toJson());
             },
           );

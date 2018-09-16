@@ -1,9 +1,13 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'homePage.dart';
 import 'historyPage.dart';
 import 'settingsPage.dart';
 
 class MainTabsPage extends StatefulWidget {
+  MainTabsPage({this.app});
+  final FirebaseApp app;
+
   @override
   State<StatefulWidget> createState() => _MainTabsPageState();
 }
@@ -17,7 +21,7 @@ class _MainTabsPageState extends State<MainTabsPage> {
         child: new Scaffold(
           body: TabBarView(
             children: <Widget>[
-              HomePage(),
+              HomePage(app: widget.app),
               HistoryPage(),
               SettingsPage(),
             ],

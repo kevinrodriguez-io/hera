@@ -8,15 +8,61 @@ class ForgotPasswordPage extends StatefulWidget {
 }
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   String username;
+  bool isSendingRecoveryEmail = false;
 
   _sendPasswordRecoveryEmail() {
-    FirebaseAuth.instance.sendPasswordResetEmail(email: username);
+    if (isSendingRecoveryEmail) return;
+    setState(() {
+      isSendingRecoveryEmail = true;
+    });
+
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text('Sending Recovery Email'),
+    ));
+
+    final FormState form = _formKey.currentState;
+    if (!form.validate()) {
+      _scaffoldKey.currentState.hideCurrentSnackBar();
+      setState(() {
+        isSendingRecoveryEmail = false;
+      });
+      return;
+    }
+
+    form.save();
+
+    try {
+      FirebaseAuth.instance.sendPasswordResetEmail(email: username);
+      _scaffoldKey.currentState.hideCurrentSnackBar();
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
+        content:
+            Text('Password reset email sent! Please check your email address.'),
+      ));
+    } catch (e) {
+      _scaffoldKey.currentState.hideCurrentSnackBar();
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
+        content: Text(e.message),
+        duration: Duration(seconds: 10),
+        action: SnackBarAction(
+          label: 'Dismiss',
+          onPressed: () {
+            _scaffoldKey.currentState.hideCurrentSnackBar();
+          },
+        ),
+      ));
+    } finally {
+      setState(() { isSendingRecoveryEmail = false; });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text('Password Recovery'),
       ),
@@ -29,6 +75,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         child: ScrollConfiguration(
           behavior: HiddenScrollBehavior(),
           child: Form(
+            key: _formKey,
             child: ListView(
               children: <Widget>[
                 FlutterLogo(
@@ -42,8 +89,13 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   ),
                 ),
                 TextFormField(
-                  onSaved: (val) { setState(() { username = val; }); },
-                  validator: (val) => val == "" ? 'Please enter a valid email' : null,
+                  onSaved: (val) {
+                    setState(() {
+                      username = val;
+                    });
+                  },
+                  validator: (val) =>
+                      val == "" ? 'Please enter a valid email' : null,
                   autocorrect: false,
                   decoration: InputDecoration(labelText: 'Email'),
                   keyboardType: TextInputType.emailAddress,
