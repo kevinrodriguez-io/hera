@@ -151,7 +151,8 @@ class _LoginPageState extends State<LoginPage> {
                     padding: EdgeInsets.symmetric(vertical: 20.0),
                     child: Text(
                       "Welcome to Hera app!, with love by kevinrodriguez-io\nSource code available at: https://github.com/kevinrodriguez-io/hera",
-                      style: TextStyle(color: Color.fromARGB(255, 200, 200, 200)),
+                      style:
+                          TextStyle(color: Color.fromARGB(255, 200, 200, 200)),
                     ),
                   ),
                   RaisedButton(

@@ -41,14 +41,10 @@ class HeraApp extends StatefulWidget {
 class _HeraAppState extends State<HeraApp> {
   Widget rootPage = RegisterPage();
 
-  Future<Widget> getRootPage() async {
-    FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    if (user != null) {
-      return MainTabsPage(app: widget.app);
-    } else {
-      return RegisterPage();
-    }
-  }
+  Future<Widget> getRootPage() async =>
+      FirebaseAuth.instance.currentUser() == null
+          ? RegisterPage()
+          : MainTabsPage();
 
   @override
   void initState() {
@@ -63,9 +59,10 @@ class _HeraAppState extends State<HeraApp> {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-        title: 'Flutter Demo',
-        theme: buildAppTheme(),
-        routes: buildAppRoutes(),
-        home: rootPage);
+      title: 'Flutter Demo',
+      theme: buildAppTheme(),
+      routes: buildAppRoutes(),
+      home: rootPage
+    );
   }
 }

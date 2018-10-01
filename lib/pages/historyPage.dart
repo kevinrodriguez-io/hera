@@ -12,6 +12,7 @@ class _HistoryPageState extends State<HistoryPage> {
       appBar: AppBar(
         title: Text('History'),
       ),
+      body: Center(child: CircularProgressIndicator(),),
     );
   }
 }

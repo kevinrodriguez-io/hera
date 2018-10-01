@@ -24,6 +24,9 @@ class _SettingsPageState extends State<SettingsPage> {
     Navigator.of(context).pushReplacementNamed('/register');
   }
 
+  _switchTheme() {
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +49,24 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
             FlatButton(
-                textColor: Theme.of(context).accentColor,
+                onPressed: _logout,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      'Switch Theme',
+                      style: TextStyle(color: Theme.of(context).accentColor),
+                    ),
+                    Spacer(),
+                    Icon(
+                      Icons.exit_to_app,
+                      color: Theme.of(context).accentColor,
+                    )
+                  ],
+                )
+                //Text('Log out'),
+                ),
+            FlatButton(
                 onPressed: _logout,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,

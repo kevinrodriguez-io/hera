@@ -1,20 +1,20 @@
-import 'package:firebase_database/firebase_database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TodoItem {
-  String key;
+  String id;
   String title = '';
   String description = '';
   bool complete = false;
 
   TodoItem(this.title, {this.description, this.complete});
 
-  TodoItem.fromSnapshot(DataSnapshot snapshot)
-      : key = snapshot.key,
-        title = snapshot.value['title'],
-        description = snapshot.value['description'],
-        complete = snapshot.value['complete'];
+  TodoItem.from(DocumentSnapshot snapshot)
+      : id = snapshot.documentID,
+        title = snapshot['title'],
+        description = snapshot['description'],
+        complete = snapshot['complete'];
 
-  toJson() {
+  Map<String, dynamic> toJson() {
     return {'title': title, 'description': description, 'complete': complete};
   }
 }
