@@ -4,17 +4,24 @@ class TodoItem {
   String id;
   String title = '';
   String description = '';
+  bool archived = false;
   bool complete = false;
 
-  TodoItem(this.title, {this.description, this.complete});
+  TodoItem(this.title, {this.description, this.complete, this.archived});
 
   TodoItem.from(DocumentSnapshot snapshot)
       : id = snapshot.documentID,
         title = snapshot['title'],
         description = snapshot['description'],
+        archived = snapshot['archived'],
         complete = snapshot['complete'];
 
   Map<String, dynamic> toJson() {
-    return {'title': title, 'description': description, 'complete': complete};
+    return {
+      'title': title,
+      'description': description,
+      'complete': complete,
+      'archived': archived
+    };
   }
 }

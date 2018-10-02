@@ -59,35 +59,83 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Card(
-          elevation: 3.0,
-          child: (_todosRef == null)
-              ? Center(
-                  child: CircularProgressIndicator(),
-                )
-              : StreamBuilder(
-                  stream: _todosRef.snapshots(),
-                  builder: (_, AsyncSnapshot<QuerySnapshot> snapshot) =>
-                      (!snapshot.hasData)
-                          ? Center(child: CircularProgressIndicator())
-                          : ListView(
-                              children: snapshot.data.documents
-                                  .map((DocumentSnapshot document) {
-                                TodoItem item = TodoItem.from(document);
-                                return CheckboxListTile(
-                                  title: Text(item.title),
-                                  subtitle: Text(item.description),
-                                  value: document['complete'],
-                                  onChanged: (bool value) {
-                                    document.reference
-                                        .updateData({"complete": value});
-                                  },
-                                );
-                              }).toList(),
-                            ),
-                ),
-        ),
+        child: (_todosRef == null)
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : StreamBuilder(
+                stream: _todosRef.where('archived', isEqualTo: false).snapshots(),
+                builder: (_, AsyncSnapshot<QuerySnapshot> snapshot) =>
+                    (!snapshot.hasData)
+                        ? Center(child: CircularProgressIndicator())
+                        : (snapshot.data.documents.length == 0)
+                            ? EmptyTodoList()
+                            : ListView(
+                                children: snapshot.data.documents
+                                    .map((DocumentSnapshot document) {
+                                  TodoItem item = TodoItem.from(document);
+                                  return Dismissible(
+                                    key: Key(item.id),
+                                    background: Container(
+                                      color: Theme.of(context).primaryColorDark,
+                                      child: Center(
+                                        child: Text(
+                                          'Archive',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+                                    onDismissed: (direction) {
+                                      // document.reference.delete();
+                                      document.reference.updateData({"archived": true});
+                                    },
+                                    child: Card(
+                                      child: CheckboxListTile(
+                                        title: Text(item.title),
+                                        subtitle: Text(item.description),
+                                        value: document['complete'],
+                                        onChanged: (bool value) {
+                                          document.reference
+                                              .updateData({"complete": value});
+                                        },
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+              ),
       ),
     );
+  }
+}
+
+class EmptyTodoList extends StatelessWidget {
+
+  const EmptyTodoList({Key key,}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+        child: Flex(
+      direction: Axis.vertical,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Icon(
+          Icons.check,
+          size: 45.0,
+          color: Colors.blueGrey,
+        ),
+        Padding(
+          padding: EdgeInsets.all(10.0),
+        ),
+        Text(
+          'It looks like you have no todos',
+          style: TextStyle(
+            color: Colors.blueGrey,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    ));
   }
 }

@@ -17,7 +17,7 @@ class _AddTodoAlertDialogState extends State<AddTodoAlertDialog> {
     if (!formState.validate()) return;
     formState.save();
     Navigator.of(context)
-        .pop(TodoItem(_title, description: _description, complete: false));
+        .pop(TodoItem(_title, description: _description, complete: false, archived: false));
   }
 
   @override
@@ -58,7 +58,7 @@ class _AddTodoAlertDialogState extends State<AddTodoAlertDialog> {
         FlatButton(
           onPressed: () {
             Navigator.of(context).pop(null);
-          },
+          }, 
           textColor: Colors.blueGrey,
           child: Text('Cancel'),
         ),
